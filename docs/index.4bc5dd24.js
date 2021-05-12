@@ -740,12 +740,12 @@ if ("development" !== "production") {
   })();
 }
 
-},{}],"3Imd1":[function(require,module,exports) {
+},{}],"6MR4l":[function(require,module,exports) {
 var HMR_HOST = null;
 var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
-module.bundle.HMR_BUNDLE_ID = "0fa2489aa94c8731ee2aee9f3fafb3e2";
+module.bundle.HMR_BUNDLE_ID = "61811293c9802bf575df4ef34bc5dd24";
 // @flow
 /*global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE*/
 /*::
@@ -1075,7 +1075,7 @@ try {
   window.$RefreshSig$ = prevRefreshSig;
 }
 
-},{"react":"3b2NM","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f","react-dom":"2sg1U","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","./app":"5XPnV"}],"3b2NM":[function(require,module,exports) {
+},{"react":"3b2NM","react-dom":"2sg1U","./app":"5XPnV","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f"}],"3b2NM":[function(require,module,exports) {
 "use strict";
 if ("development" === 'production') {
   module.exports = require('./cjs/react.production.min.js');
@@ -3178,164 +3178,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],"4Jj4f":[function(require,module,exports) {
-"use strict";
-var Refresh = require('react-refresh/runtime');
-function debounce(func, delay) {
-  if ("development" === 'test') {
-    return function (args) {
-      func.call(null, args);
-    };
-  } else {
-    var timeout = undefined;
-    return function (args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(function () {
-        timeout = undefined;
-        func.call(null, args);
-      }, delay);
-    };
-  }
-}
-var enqueueUpdate = debounce(function () {
-  Refresh.performReactRefresh();
-}, 30);
-// Everthing below is either adapted or copied from
-// https://github.com/facebook/metro/blob/61de16bd1edd7e738dd0311c89555a644023ab2d/packages/metro/src/lib/polyfills/require.js
-// MIT License - Copyright (c) Facebook, Inc. and its affiliates.
-module.exports.prelude = function (module) {
-  window.$RefreshReg$ = function (type, id) {
-    Refresh.register(type, module.id + ' ' + id);
-  };
-  window.$RefreshSig$ = Refresh.createSignatureFunctionForTransform;
-};
-module.exports.postlude = function (module) {
-  if (isReactRefreshBoundary(module.exports)) {
-    registerExportsForReactRefresh(module);
-    if (module.hot) {
-      module.hot.dispose(function (data) {
-        if (Refresh.hasUnrecoverableErrors()) {
-          window.location.reload();
-        }
-        data.prevExports = module.exports;
-      });
-      module.hot.accept(function (getParents) {
-        var prevExports = module.hot.data.prevExports;
-        var nextExports = module.exports;
-        // Since we just executed the code for it, it's possible
-        // that the new exports make it ineligible for being a boundary.
-        var isNoLongerABoundary = !isReactRefreshBoundary(nextExports);
-        // It can also become ineligible if its exports are incompatible
-        // with the previous exports.
-        // For example, if you add/remove/change exports, we'll want
-        // to re-execute the importing modules, and force those components
-        // to re-render. Similarly, if you convert a class component
-        // to a function, we want to invalidate the boundary.
-        var didInvalidate = shouldInvalidateReactRefreshBoundary(prevExports, nextExports);
-        if (isNoLongerABoundary || didInvalidate) {
-          // We'll be conservative. The only case in which we won't do a full
-          // reload is if all parent modules are also refresh boundaries.
-          // In that case we'll add them to the current queue.
-          var parents = getParents();
-          if (parents.length === 0) {
-            // Looks like we bubbled to the root. Can't recover from that.
-            window.location.reload();
-            return;
-          }
-          return parents;
-        }
-        enqueueUpdate();
-      });
-    }
-  }
-};
-function isReactRefreshBoundary(exports) {
-  if (Refresh.isLikelyComponentType(exports)) {
-    return true;
-  }
-  if (exports == null || typeof exports !== 'object') {
-    // Exit if we can't iterate over exports.
-    return false;
-  }
-  var hasExports = false;
-  var areAllExportsComponents = true;
-  let isESM = ('__esModule' in exports);
-  for (var key in exports) {
-    hasExports = true;
-    if (key === '__esModule') {
-      continue;
-    }
-    var desc = Object.getOwnPropertyDescriptor(exports, key);
-    if (desc && desc.get && !isESM) {
-      // Don't invoke getters for CJS as they may have side effects.
-      return false;
-    }
-    var exportValue = exports[key];
-    if (!Refresh.isLikelyComponentType(exportValue)) {
-      areAllExportsComponents = false;
-    }
-  }
-  return hasExports && areAllExportsComponents;
-}
-function shouldInvalidateReactRefreshBoundary(prevExports, nextExports) {
-  var prevSignature = getRefreshBoundarySignature(prevExports);
-  var nextSignature = getRefreshBoundarySignature(nextExports);
-  if (prevSignature.length !== nextSignature.length) {
-    return true;
-  }
-  for (var i = 0; i < nextSignature.length; i++) {
-    if (prevSignature[i] !== nextSignature[i]) {
-      return true;
-    }
-  }
-  return false;
-}
-// When this signature changes, it's unsafe to stop at this refresh boundary.
-function getRefreshBoundarySignature(exports) {
-  var signature = [];
-  signature.push(Refresh.getFamilyByType(exports));
-  if (exports == null || typeof exports !== 'object') {
-    // Exit if we can't iterate over exports.
-    // (This is important for legacy environments.)
-    return signature;
-  }
-  let isESM = ('__esModule' in exports);
-  for (var key in exports) {
-    if (key === '__esModule') {
-      continue;
-    }
-    var desc = Object.getOwnPropertyDescriptor(exports, key);
-    if (desc && desc.get && !isESM) {
-      // Don't invoke getters for CJS as they may have side effects.
-      continue;
-    }
-    var exportValue = exports[key];
-    signature.push(key);
-    signature.push(Refresh.getFamilyByType(exportValue));
-  }
-  return signature;
-}
-function registerExportsForReactRefresh(module) {
-  var exports = module.exports, id = module.id;
-  Refresh.register(exports, id + ' %exports%');
-  if (exports == null || typeof exports !== 'object') {
-    // Exit if we can't iterate over exports.
-    // (This is important for legacy environments.)
-    return;
-  }
-  let isESM = ('__esModule' in exports);
-  for (var key in exports) {
-    var desc = Object.getOwnPropertyDescriptor(exports, key);
-    if (desc && desc.get && !isESM) {
-      // Don't invoke getters for CJS as they may have side effects.
-      continue;
-    }
-    var exportValue = exports[key];
-    Refresh.register(exportValue, id + ' %exports% ' + key);
-  }
-}
-
-},{"react-refresh/runtime":"592mh"}],"2sg1U":[function(require,module,exports) {
+},{}],"2sg1U":[function(require,module,exports) {
 "use strict";
 function checkDCE() {
   /*global __REACT_DEVTOOLS_GLOBAL_HOOK__*/
@@ -26425,7 +26268,465 @@ if ("development" !== "production") {
   })();
 }
 
-},{}],"5gA8y":[function(require,module,exports) {
+},{}],"5XPnV":[function(require,module,exports) {
+var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  var _react = require('react');
+  var _calendar = require('./calendar');
+  var _calendarDefault = _parcelHelpers.interopDefault(_calendar);
+  var _generateEvents = require('./generateEvents');
+  var _generateEventsDefault = _parcelHelpers.interopDefault(_generateEvents);
+  require('./app.css');
+  var _jsxFileName = "/workspaces/calendar/src/app.js";
+  class App extends _react.Component {
+    constructor(props) {
+      super(props);
+      let date = new Date();
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const events = _generateEventsDefault.default({
+        date
+      });
+      this.state = {
+        date,
+        generated: {
+          [date.toString()]: events
+        },
+        events
+      };
+    }
+    setDate = date => {
+      let generated = this.state.generated;
+      let events = generated[date.toString()];
+      if (!events) {
+        events = _generateEventsDefault.default({
+          date
+        });
+        generated[date.toString()] = events;
+      }
+      this.setState({
+        date,
+        events,
+        generated
+      });
+    };
+    handleClickLeft = () => {
+      let {date} = this.state;
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      date = new Date(date.getTime() - 6 * 60 * 60 * 1000);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      this.setDate(date);
+    };
+    handleClickRight = () => {
+      let {date} = this.state;
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      date = new Date(date.getTime() + (24 + 6) * 60 * 60 * 1000);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      this.setDate(date);
+    };
+    handleDateChange = e => {
+      const date = new Date(e.target.value);
+      if (date.getFullYear()) this.setDate(date);
+    };
+    handleEventClick = ev => {
+      alert(`${_calendar.formatTime(ev.start)} - ${_calendar.formatTime(ev.end)}
+${ev.eventName}`);
+    };
+    render() {
+      const dateAnchor = this.state.date;
+      return (
+        /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("h2", {
+          className: "title",
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 69,
+            columnNumber: 9
+          }
+        }, /*#__PURE__*/_react.createElement("button", {
+          className: "dateFlip dateFlipLeft",
+          onClick: this.handleClickLeft,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 70,
+            columnNumber: 11
+          }
+        }, "<"), /*#__PURE__*/_react.createElement("span", {
+          className: "dateSelectorContainer",
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 71,
+            columnNumber: 11
+          }
+        }, dateAnchor.getDate(), " ", _calendar.monthStr(dateAnchor), " ", /*#__PURE__*/_react.createElement("span", {
+          className: "year",
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 72,
+            columnNumber: 59
+          }
+        }, dateAnchor.getFullYear()), /*#__PURE__*/_react.createElement("span", {
+          className: "hiddenSelectorContainer",
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 73,
+            columnNumber: 13
+          }
+        }, /*#__PURE__*/_react.createElement("input", {
+          className: "hiddenSelector",
+          type: "date",
+          value: this.state.date.toISOString().split('T')[0],
+          onChange: this.handleDateChange,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 74,
+            columnNumber: 15
+          }
+        }))), /*#__PURE__*/_react.createElement("button", {
+          className: "dateFlip dateFlipLeft",
+          onClick: this.handleClickRight,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 80,
+            columnNumber: 11
+          }
+        }, ">")), /*#__PURE__*/_react.createElement(_calendarDefault.default, {
+          className: "calendar700px",
+          events: this.state.events,
+          onEventClick: this.handleEventClick,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 82,
+            columnNumber: 9
+          }
+        }))
+      );
+    }
+  }
+  exports.default = App;
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+
+},{"react":"3b2NM","./calendar":"2NwTP","./generateEvents":"1SaZp","./app.css":"4RKET","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f"}],"2NwTP":[function(require,module,exports) {
+var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  _parcelHelpers.export(exports, "listDayHours", function () {
+    return listDayHours;
+  });
+  _parcelHelpers.export(exports, "formatTime", function () {
+    return formatTime;
+  });
+  _parcelHelpers.export(exports, "monthStr", function () {
+    return monthStr;
+  });
+  _parcelHelpers.export(exports, "weekdayStr", function () {
+    return weekdayStr;
+  });
+  var _react = require('react');
+  var _eventLayout = require('./eventLayout');
+  var _eventLayoutDefault = _parcelHelpers.interopDefault(_eventLayout);
+  require('./calendar.css');
+  var _jsxFileName = "/workspaces/calendar/src/calendar.js";
+  function Calendar({events, className, onEventClick} = {}) {
+    const columns = _eventLayoutDefault.default(events);
+    // any Date within current date
+    const todayAnchor = events[0].start;
+    const todayStart = new Date(todayAnchor.getFullYear(), todayAnchor.getMonth(), todayAnchor.getDate()).getTime();
+    // any Date within the next day
+    // (incrementing this way is safe in daylight savings switch, leap year/leap second and all other calendar quirks)
+    const tomorrowAnchor = new Date(todayStart + (24 + 6) * 60 * 60 * 1000);
+    const todayEnd = new Date(tomorrowAnchor.getFullYear(), tomorrowAnchor.getMonth(), tomorrowAnchor.getDate()).getTime();
+    const labelHours = listDayHours(todayAnchor);
+    return (
+      /*#__PURE__*/_react.createElement("div", {
+        className: 'calendar' + (className && ' ' + className || ''),
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 32,
+          columnNumber: 5
+        }
+      }, /*#__PURE__*/_react.createElement("div", {
+        className: "hourBands",
+        style: {
+          gridColumnStart: 1,
+          gridColumnEnd: columns.length + 2,
+          gridRow: 1
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 33,
+          columnNumber: 7
+        }
+      }, labelHours.map((hr, hrIndex) => {
+        const hourDuration = (hrIndex + 1 < labelHours.length ? labelHours[hrIndex + 1].getTime() : todayEnd) - hr.getTime();
+        const hourHeightPc = hourDuration * 100 / (todayEnd - todayStart);
+        return (
+          /*#__PURE__*/_react.createElement("div", {
+            className: hrIndex % 2 ? 'hourBand hourOdd' : 'hourBand hourEven',
+            key: hr.getTime(),
+            style: {
+              height: `${hourHeightPc}%`
+            },
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 43,
+              columnNumber: 15
+            }
+          })
+        );
+      })), /*#__PURE__*/_react.createElement("div", {
+        className: "hourBar",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 54,
+          columnNumber: 7
+        }
+      }, labelHours.map((hr, hrIndex) => {
+        const hourDuration = (hrIndex + 1 < labelHours.length ? labelHours[hrIndex + 1].getTime() : todayEnd) - hr.getTime();
+        const hourHeightPc = hourDuration * 100 / (todayEnd - todayStart);
+        return (
+          /*#__PURE__*/_react.createElement("div", {
+            className: hrIndex % 2 ? 'hour hourOdd' : 'hour hourEven',
+            key: hr.getTime(),
+            style: {
+              height: `${hourHeightPc}%`
+            },
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 60,
+              columnNumber: 15
+            }
+          }, hr.getHours(), ":00")
+        );
+      })), columns.map((col, colIndex) => {
+        return (
+          /*#__PURE__*/_react.createElement(_react.Fragment, {
+            key: `column-${colIndex}`,
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 75,
+              columnNumber: 13
+            }
+          }, col.map((ev, evIndex) => /*#__PURE__*/_react.createElement(EventTile, {
+            evIndex,
+            colIndex,
+            ev,
+            todayStart,
+            todayEnd,
+            columns,
+            onEventClick,
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 78,
+              columnNumber: 19
+            }
+          })))
+        );
+      }))
+    );
+  }
+  exports.default = Calendar;
+  _c = Calendar;
+  /**
+  * @param {{
+  *    evIndex: number
+  *    colIndex: number
+  *    ev: import('./eventLayout').ArrayElement<ReturnType<typeof import('./generateEvents').default>>
+  *    todayStart: number
+  *    todayEnd: number
+  *    columns: ReturnType<typeof import('./generateEvents').default>[]
+  *    onEventClick?: (ev: import('./eventLayout').ArrayElement<ReturnType<typeof import('./generateEvents').default>>) => void
+  * }} params
+  */
+  function EventTile({evIndex, colIndex, ev, todayStart, todayEnd, columns, onEventClick}) {
+    const totalHeightPc = (ev.end.getTime() - todayStart) * 100 / (todayEnd - todayStart);
+    const paddingHeightPc = (ev.start.getTime() - todayStart) * 100 / (ev.end.getTime() - todayStart);
+    const eventHeightPc = (ev.end.getTime() - ev.start.getTime()) * 100 / (ev.end.getTime() - todayStart);
+    let durationMinutes = (ev.end.getTime() - ev.start.getTime()) / 1000 / 60;
+    let durationHours = Math.floor(durationMinutes / 60);
+    durationMinutes = durationMinutes - durationHours * 60;
+    let spanColumns = 1;
+    let overlapsAnyOtherEvents = null;
+    for (let iExtraColumn = colIndex + 1; iExtraColumn < columns.length; iExtraColumn++) {
+      const extraCol = columns[iExtraColumn];
+      for (const otherEv of extraCol) {
+        if (_eventLayout.eventsOverlap(otherEv, ev)) {
+          overlapsAnyOtherEvents = otherEv;
+          break;
+        }
+      }
+      if (overlapsAnyOtherEvents) break; else spanColumns++;
+    }
+    return (
+      /*#__PURE__*/_react.createElement("div", {
+        key: `event-${evIndex}`,
+        className: "eventContainer",
+        style: {
+          gridRow: 1,
+          gridColumnStart: colIndex + 2,
+          gridColumnEnd: colIndex + 2 + spanColumns,
+          height: `${totalHeightPc}%`
+        },
+        onClick: onEventClick && (() => onEventClick(ev)),
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 132,
+          columnNumber: 5
+        }
+      }, /*#__PURE__*/_react.createElement("div", {
+        className: "filler",
+        style: {
+          width: 0,
+          height: `${paddingHeightPc}%`
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 140,
+          columnNumber: 7
+        }
+      }), /*#__PURE__*/_react.createElement("div", {
+        className: "event",
+        style: {
+          height: `${eventHeightPc}%`,
+          minHeight: `${eventHeightPc}%`
+        },
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 145,
+          columnNumber: 7
+        }
+      }, /*#__PURE__*/_react.createElement("div", {
+        className: "time",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 150,
+          columnNumber: 9
+        }
+      }, formatTime(ev.start)), /*#__PURE__*/_react.createElement("div", {
+        className: "title",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 151,
+          columnNumber: 9
+        }
+      }, ev.eventName), /*#__PURE__*/_react.createElement("div", {
+        className: "duration",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 152,
+          columnNumber: 9
+        }
+      }, durationHours ? /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("span", {
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 152,
+          columnNumber: 54
+        }
+      }, durationHours), ":") : null, (100 + durationMinutes).toString().slice(1), durationHours ? '' : 'min')))
+    );
+  }
+  _c2 = EventTile;
+  function listDayHours(dateAnchor) {
+    let moment = new Date(dateAnchor.getFullYear(), dateAnchor.getMonth(), dateAnchor.getDate());
+    /** @type {Date[]}*/
+    const result = [];
+    while (true) {
+      if (moment.getFullYear() !== dateAnchor.getFullYear() || moment.getMonth() !== dateAnchor.getMonth() || moment.getDate() !== dateAnchor.getDate()) break;
+      result.push(moment);
+      // step 1 hour ahead, but!!
+      // some hours may have unusual duration, due to leap seconds
+      // so we overstep into the next hour a little, then round back to whole hours
+      moment = new Date(moment.getTime() + (60 + 10) * 60 * 1000);
+      const excess = moment.getMilliseconds() + moment.getSeconds() * 1000 + moment.getMinutes() * 1000 * 60;
+      moment = new Date(moment.getTime() - excess);
+    }
+    return result;
+  }
+  function formatTime(dt) {
+    return dt.getHours() + ':' + (100 + dt.getMinutes()).toString().slice(1);
+  }
+  function monthStr(dt) {
+    return monthNames[dt.getMonth()];
+  }
+  function weekdayStr(dt) {
+    return weekdayNames[dt.getDay()];
+  }
+  const monthNames = ('January,February,March,April,May,June,July,August,September,October,November,December').split(',');
+  const weekdayNames = ('Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday').split(',');
+  var _c, _c2;
+  $RefreshReg$(_c, "Calendar");
+  $RefreshReg$(_c2, "EventTile");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+
+},{"react":"3b2NM","./eventLayout":"1Adj9","./calendar.css":"71nWm","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f"}],"1Adj9":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "eventsOverlap", function () {
+  return eventsOverlap;
+});
+function eventLayout(events) {
+  const orderedEvents = events.sort((ev1, ev2) => ev1.start.getTime() - ev2.start.getTime() || ev1.end.getTime() - ev2.end.getTime());
+  /** @type {typeof events[]}*/
+  const columns = [];
+  for (const ev of orderedEvents) {
+    let addedToColumn = false;
+    for (const col of columns) {
+      const lastEvent = col[col.length - 1];
+      if (ev.start >= lastEvent.end) {
+        col.push(ev);
+        addedToColumn = true;
+        break;
+      }
+    }
+    if (!addedToColumn) {
+      columns.push([ev]);
+    }
+  }
+  return columns;
+}
+exports.default = eventLayout;
+function eventsOverlap(ev1, ev2) {
+  return ev1.start <= ev2.end && ev1.end >= ev2.start;
+}
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5gA8y":[function(require,module,exports) {
 "use strict";
 
 exports.interopDefault = function (a) {
@@ -26467,348 +26768,164 @@ exports.export = function (dest, destName, get) {
     get: get
   });
 };
-},{}],"5XPnV":[function(require,module,exports) {
-var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-helpers.prelude(module);
-try {
-  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-  _parcelHelpers.defineInteropFlag(exports);
-  var _react = require('react');
-  var _calendar = require('./calendar');
-  var _calendarDefault = _parcelHelpers.interopDefault(_calendar);
-  var _generateEvents = require('./generateEvents');
-  var _generateEventsDefault = _parcelHelpers.interopDefault(_generateEvents);
-  var _jsxFileName = "/workspaces/calendar/src/app.js";
-  class App extends _react.Component {
-    constructor(props) {
-      super(props);
-      let date = new Date();
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      const events = _generateEventsDefault.default({
-        date
-      });
-      this.state = {
-        date,
-        generated: {
-          [date.toString()]: events
-        },
-        events
-      };
-    }
-    setDate = date => {
-      let generated = this.state.generated;
-      let events = generated[date.toString()];
-      if (!events) {
-        events = _generateEventsDefault.default({
-          date
-        });
-        generated[date.toString()] = events;
-      }
-      this.setState({
-        date,
-        events,
-        generated
-      });
+},{}],"71nWm":[function() {},{}],"4Jj4f":[function(require,module,exports) {
+"use strict";
+var Refresh = require('react-refresh/runtime');
+function debounce(func, delay) {
+  if ("development" === 'test') {
+    return function (args) {
+      func.call(null, args);
     };
-    clickLeft = () => {
-      let {date} = this.state;
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      date = new Date(date.getTime() - 6 * 60 * 60 * 1000);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      this.setDate(date);
+  } else {
+    var timeout = undefined;
+    return function (args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(function () {
+        timeout = undefined;
+        func.call(null, args);
+      }, delay);
     };
-    clickRight = () => {
-      let {date} = this.state;
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      date = new Date(date.getTime() + (24 + 6) * 60 * 60 * 1000);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      this.setDate(date);
-    };
-    onDateChange = e => {
-      const date = new Date(e.target.value);
-      if (date.getFullYear()) this.setDate(date);
-    };
-    render() {
-      const dateAnchor = this.state.date;
-      return (
-        /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("h2", {
-          __self: this,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 61,
-            columnNumber: 9
-          }
-        }, "Calendar for ", ' ', /*#__PURE__*/_react.createElement("button", {
-          onClick: this.clickLeft,
-          __self: this,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 63,
-            columnNumber: 11
-          }
-        }, "<"), /*#__PURE__*/_react.createElement("input", {
-          type: "date",
-          value: this.state.date.toISOString().split('T')[0],
-          onChange: this.onDateChange,
-          __self: this,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 64,
-            columnNumber: 11
-          }
-        }), /*#__PURE__*/_react.createElement("button", {
-          onClick: this.clickRight,
-          __self: this,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 65,
-            columnNumber: 11
-          }
-        }, ">")), /*#__PURE__*/_react.createElement(_calendarDefault.default, {
-          events: this.state.events,
-          __self: this,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 67,
-            columnNumber: 9
-          }
-        }))
-      );
-    }
   }
-  exports.default = App;
-  helpers.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
 }
-
-},{"react":"3b2NM","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f","./calendar":"2NwTP","./generateEvents":"1SaZp"}],"2NwTP":[function(require,module,exports) {
-var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-helpers.prelude(module);
-try {
-  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-  _parcelHelpers.defineInteropFlag(exports);
-  _parcelHelpers.export(exports, "dayHours", function () {
-    return dayHours;
-  });
-  var _react = require('react');
-  var _eventLayout = require('./eventLayout');
-  var _eventLayoutDefault = _parcelHelpers.interopDefault(_eventLayout);
-  require('./calendar.css');
-  var _jsxFileName = "/workspaces/calendar/src/calendar.js";
-  function Calendar({events} = {}) {
-    const columns = _eventLayoutDefault.default(events);
-    const todayAnchor = events[0].start;
-    const todayStart = new Date(todayAnchor.getFullYear(), todayAnchor.getMonth(), todayAnchor.getDate()).getTime();
-    const tomorrowAnchor = new Date(todayStart + (24 + 6) * 60 * 60 * 1000);
-    // going to the next day in daylight-safe manner
-    const todayEnd = new Date(tomorrowAnchor.getFullYear(), tomorrowAnchor.getMonth(), tomorrowAnchor.getDate()).getTime();
-    const hours = dayHours(todayAnchor);
-    return (
-      /*#__PURE__*/_react.createElement("div", {
-        className: "calendar",
-        __self: this,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 26,
-          columnNumber: 5
+var enqueueUpdate = debounce(function () {
+  Refresh.performReactRefresh();
+}, 30);
+// Everthing below is either adapted or copied from
+// https://github.com/facebook/metro/blob/61de16bd1edd7e738dd0311c89555a644023ab2d/packages/metro/src/lib/polyfills/require.js
+// MIT License - Copyright (c) Facebook, Inc. and its affiliates.
+module.exports.prelude = function (module) {
+  window.$RefreshReg$ = function (type, id) {
+    Refresh.register(type, module.id + ' ' + id);
+  };
+  window.$RefreshSig$ = Refresh.createSignatureFunctionForTransform;
+};
+module.exports.postlude = function (module) {
+  if (isReactRefreshBoundary(module.exports)) {
+    registerExportsForReactRefresh(module);
+    if (module.hot) {
+      module.hot.dispose(function (data) {
+        if (Refresh.hasUnrecoverableErrors()) {
+          window.location.reload();
         }
-      }, /*#__PURE__*/_react.createElement("div", {
-        className: "hourBar",
-        __self: this,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 27,
-          columnNumber: 7
+        data.prevExports = module.exports;
+      });
+      module.hot.accept(function (getParents) {
+        var prevExports = module.hot.data.prevExports;
+        var nextExports = module.exports;
+        // Since we just executed the code for it, it's possible
+        // that the new exports make it ineligible for being a boundary.
+        var isNoLongerABoundary = !isReactRefreshBoundary(nextExports);
+        // It can also become ineligible if its exports are incompatible
+        // with the previous exports.
+        // For example, if you add/remove/change exports, we'll want
+        // to re-execute the importing modules, and force those components
+        // to re-render. Similarly, if you convert a class component
+        // to a function, we want to invalidate the boundary.
+        var didInvalidate = shouldInvalidateReactRefreshBoundary(prevExports, nextExports);
+        if (isNoLongerABoundary || didInvalidate) {
+          // We'll be conservative. The only case in which we won't do a full
+          // reload is if all parent modules are also refresh boundaries.
+          // In that case we'll add them to the current queue.
+          var parents = getParents();
+          if (parents.length === 0) {
+            // Looks like we bubbled to the root. Can't recover from that.
+            window.location.reload();
+            return;
+          }
+          return parents;
         }
-      }, hours.map((hr, hrIndex) => {
-        const hourDuration = (hrIndex + 1 < hours.length ? hours[hrIndex + 1].getTime() : todayEnd) - hr.getTime();
-        const hourHeightPc = hourDuration * 100 / (todayEnd - todayStart);
-        return (
-          /*#__PURE__*/_react.createElement("div", {
-            className: "hour",
-            key: hr.getTime(),
-            style: {
-              height: `${hourHeightPc}%`
-            },
-            __self: this,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 33,
-              columnNumber: 15
-            }
-          }, hr.getHours(), ":00")
-        );
-      })), columns.map((col, colIndex) => {
-        return (
-          /*#__PURE__*/_react.createElement(_react.Fragment, {
-            key: `column-${colIndex}`,
-            __self: this,
-            __source: {
-              fileName: _jsxFileName,
-              lineNumber: 47,
-              columnNumber: 13
-            }
-          }, col.map((ev, evIndex) => {
-            const totalHeightPc = (ev.end.getTime() - todayStart) * 100 / (todayEnd - todayStart);
-            const paddingHeightPc = (ev.start.getTime() - todayStart) * 100 / (ev.end.getTime() - todayStart);
-            const eventHeightPc = (ev.end.getTime() - ev.start.getTime()) * 100 / (ev.end.getTime() - todayStart);
-            let durationMinutes = (ev.end.getTime() - ev.start.getTime()) / 1000 / 60;
-            let durationHours = Math.floor(durationMinutes / 60);
-            durationMinutes = durationMinutes - durationHours * 60;
-            let spanColumns = 1;
-            let overlapsAnyOtherEvents = null;
-            for (let iExtraColumn = colIndex + 1; iExtraColumn < columns.length; iExtraColumn++) {
-              const extraCol = columns[iExtraColumn];
-              for (const otherEv of extraCol) {
-                if (_eventLayout.eventsOverlap(otherEv, ev)) {
-                  overlapsAnyOtherEvents = otherEv;
-                  break;
-                }
-              }
-              if (overlapsAnyOtherEvents) break; else spanColumns++;
-            }
-            return (
-              /*#__PURE__*/_react.createElement("div", {
-                key: `event-${evIndex}`,
-                className: "eventContainer",
-                style: {
-                  gridRow: 1,
-                  gridColumnStart: colIndex + 2,
-                  gridColumnEnd: colIndex + 2 + spanColumns,
-                  height: `${totalHeightPc}%`
-                },
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 73,
-                  columnNumber: 21
-                }
-              }, /*#__PURE__*/_react.createElement("div", {
-                className: "filler",
-                style: {
-                  width: 0,
-                  height: `${paddingHeightPc}%`
-                },
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 80,
-                  columnNumber: 23
-                }
-              }), /*#__PURE__*/_react.createElement("div", {
-                className: "event",
-                style: {
-                  height: `${eventHeightPc}%`,
-                  minHeight: `${eventHeightPc}%`
-                },
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 85,
-                  columnNumber: 23
-                }
-              }, /*#__PURE__*/_react.createElement("div", {
-                className: "time",
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 90,
-                  columnNumber: 25
-                }
-              }, ev.start.getHours(), ":", (100 + ev.start.getMinutes()).toString().slice(1)), /*#__PURE__*/_react.createElement("div", {
-                className: "title",
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 91,
-                  columnNumber: 25
-                }
-              }, ev.eventName), /*#__PURE__*/_react.createElement("div", {
-                className: "duration",
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 92,
-                  columnNumber: 25
-                }
-              }, durationHours ? /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("span", {
-                __self: this,
-                __source: {
-                  fileName: _jsxFileName,
-                  lineNumber: 92,
-                  columnNumber: 70
-                }
-              }, durationHours), ":") : null, (100 + durationMinutes).toString().slice(1))))
-            );
-          }))
-        );
-      }))
-    );
-  }
-  exports.default = Calendar;
-  _c = Calendar;
-  function dayHours(dateAnchor) {
-    let moment = new Date(dateAnchor.getFullYear(), dateAnchor.getMonth(), dateAnchor.getDate());
-    /** @type {Date[]}*/
-    const result = [];
-    while (true) {
-      if (moment.getFullYear() !== dateAnchor.getFullYear() || moment.getMonth() !== dateAnchor.getMonth() || moment.getDate() !== dateAnchor.getDate()) break;
-      result.push(moment);
-      // step 1 hour ahead, but!!
-      // some hours may have unusual duration, due to leap seconds
-      // so we overstep into the next hour a little, then round back to whole hours
-      moment = new Date(moment.getTime() + (60 + 10) * 60 * 1000);
-      const excess = moment.getMilliseconds() + moment.getSeconds() * 1000 + moment.getMinutes() * 1000 * 60;
-      moment = new Date(moment.getTime() - excess);
+        enqueueUpdate();
+      });
     }
-    return result;
   }
-  var _c;
-  $RefreshReg$(_c, "Calendar");
-  helpers.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
+};
+function isReactRefreshBoundary(exports) {
+  if (Refresh.isLikelyComponentType(exports)) {
+    return true;
+  }
+  if (exports == null || typeof exports !== 'object') {
+    // Exit if we can't iterate over exports.
+    return false;
+  }
+  var hasExports = false;
+  var areAllExportsComponents = true;
+  let isESM = ('__esModule' in exports);
+  for (var key in exports) {
+    hasExports = true;
+    if (key === '__esModule') {
+      continue;
+    }
+    var desc = Object.getOwnPropertyDescriptor(exports, key);
+    if (desc && desc.get && !isESM) {
+      // Don't invoke getters for CJS as they may have side effects.
+      return false;
+    }
+    var exportValue = exports[key];
+    if (!Refresh.isLikelyComponentType(exportValue)) {
+      areAllExportsComponents = false;
+    }
+  }
+  return hasExports && areAllExportsComponents;
+}
+function shouldInvalidateReactRefreshBoundary(prevExports, nextExports) {
+  var prevSignature = getRefreshBoundarySignature(prevExports);
+  var nextSignature = getRefreshBoundarySignature(nextExports);
+  if (prevSignature.length !== nextSignature.length) {
+    return true;
+  }
+  for (var i = 0; i < nextSignature.length; i++) {
+    if (prevSignature[i] !== nextSignature[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+// When this signature changes, it's unsafe to stop at this refresh boundary.
+function getRefreshBoundarySignature(exports) {
+  var signature = [];
+  signature.push(Refresh.getFamilyByType(exports));
+  if (exports == null || typeof exports !== 'object') {
+    // Exit if we can't iterate over exports.
+    // (This is important for legacy environments.)
+    return signature;
+  }
+  let isESM = ('__esModule' in exports);
+  for (var key in exports) {
+    if (key === '__esModule') {
+      continue;
+    }
+    var desc = Object.getOwnPropertyDescriptor(exports, key);
+    if (desc && desc.get && !isESM) {
+      // Don't invoke getters for CJS as they may have side effects.
+      continue;
+    }
+    var exportValue = exports[key];
+    signature.push(key);
+    signature.push(Refresh.getFamilyByType(exportValue));
+  }
+  return signature;
+}
+function registerExportsForReactRefresh(module) {
+  var exports = module.exports, id = module.id;
+  Refresh.register(exports, id + ' %exports%');
+  if (exports == null || typeof exports !== 'object') {
+    // Exit if we can't iterate over exports.
+    // (This is important for legacy environments.)
+    return;
+  }
+  let isESM = ('__esModule' in exports);
+  for (var key in exports) {
+    var desc = Object.getOwnPropertyDescriptor(exports, key);
+    if (desc && desc.get && !isESM) {
+      // Don't invoke getters for CJS as they may have side effects.
+      continue;
+    }
+    var exportValue = exports[key];
+    Refresh.register(exportValue, id + ' %exports% ' + key);
+  }
 }
 
-},{"react":"3b2NM","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f","./eventLayout":"1Adj9","./calendar.css":"71nWm"}],"1Adj9":[function(require,module,exports) {
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-_parcelHelpers.export(exports, "eventsOverlap", function () {
-  return eventsOverlap;
-});
-function eventLayout(events) {
-  const orderedEvents = events.sort((ev1, ev2) => ev1.start.getTime() - ev2.start.getTime() || ev1.end.getTime() - ev2.end.getTime());
-  /** @type {typeof events[]}*/
-  const columns = [];
-  for (const ev of orderedEvents) {
-    let addedToColumn = false;
-    for (const col of columns) {
-      const lastEvent = col[col.length - 1];
-      if (ev.start >= lastEvent.end) {
-        col.push(ev);
-        addedToColumn = true;
-        break;
-      }
-    }
-    if (!addedToColumn) {
-      columns.push([ev]);
-    }
-  }
-  return columns;
-}
-exports.default = eventLayout;
-function eventsOverlap(ev1, ev2) {
-  return ev1.start <= ev2.end && ev1.end >= ev2.start;
-}
-
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"71nWm":[function() {},{}],"1SaZp":[function(require,module,exports) {
+},{"react-refresh/runtime":"592mh"}],"1SaZp":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 _parcelHelpers.export(exports, "standardEventNames", function () {
@@ -26852,6 +26969,6 @@ exports.default = generateEvents;
 const standardEventNames = ['Software Daily Standup', 'Emma, Steven, Peter Meeting Board Room', 'Paul NRF project planning Finance Room', 'Tobias Manufacturing Backlog Grooming Development Room', 'Integration Testing', 'Performance Discussion', 'Sprint Planning', 'Business Demo', 'Release Cut'];
 function offsetDate(dt, hours) {}
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["1j6wU","3Imd1","5rkFb"], "5rkFb", "parcelRequire6113")
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"4RKET":[function() {},{}]},["1j6wU","6MR4l","5rkFb"], "5rkFb", "parcelRequire6113")
 
-//# sourceMappingURL=index.3fafb3e2.js.map
+//# sourceMappingURL=index.4bc5dd24.js.map
