@@ -121,7 +121,8 @@ export function dayHours(dateAnchor) {
     // some hours may have unusual duration, due to leap seconds
     // so we overstep into the next hour a little, then round back to whole hours
     moment = new Date(moment.getTime() + (60 + 10) * 60 * 1000);
-    moment = new Date(moment.getFullYear(), moment.getMonth(), moment.getDate(), moment.getHours(), 0);
+    const excess = moment.getMilliseconds() + moment.getSeconds() * 1000 + moment.getMinutes() * 1000 * 60;
+    moment = new Date(moment.getTime() - excess);
   }
   return result;
 }

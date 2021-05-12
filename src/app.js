@@ -49,11 +49,21 @@ export default class App extends React.Component {
     this.setDate(date);
   };
 
+  onDateChange = (e) => {
+    const date = new Date(e.target.value);
+    if (date.getFullYear()) this.setDate(date);
+  };
+
   render() {
     const dateAnchor = this.state.date;
     return (
       <>
-        <h2>Calendar for <button onClick={this.clickLeft}>&lt;</button> {dateAnchor.getFullYear()}/{dateAnchor.getMonth() + 1}/{dateAnchor.getDate()} <button onClick={this.clickRight}>&gt;</button></h2>
+        <h2>
+          Calendar for {' '}
+          <button onClick={this.clickLeft}>&lt;</button>
+          <input type='date' value={this.state.date.toISOString().split('T')[0]} onChange={this.onDateChange}></input>
+          <button onClick={this.clickRight}>&gt;</button>
+        </h2>
         <Calendar events={this.state.events} />
       </>
     );

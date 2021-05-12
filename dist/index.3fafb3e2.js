@@ -740,9 +740,9 @@ if ("development" !== "production") {
   })();
 }
 
-},{}],"3nwlL":[function(require,module,exports) {
+},{}],"3Imd1":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 33633;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "0fa2489aa94c8731ee2aee9f3fafb3e2";
@@ -26526,6 +26526,10 @@ try {
       date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       this.setDate(date);
     };
+    onDateChange = e => {
+      const date = new Date(e.target.value);
+      if (date.getFullYear()) this.setDate(date);
+    };
     render() {
       const dateAnchor = this.state.date;
       return (
@@ -26533,31 +26537,41 @@ try {
           __self: this,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 56,
+            lineNumber: 61,
             columnNumber: 9
           }
-        }, "Calendar for ", /*#__PURE__*/_react.createElement("button", {
+        }, "Calendar for ", ' ', /*#__PURE__*/_react.createElement("button", {
           onClick: this.clickLeft,
           __self: this,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 56,
-            columnNumber: 26
+            lineNumber: 63,
+            columnNumber: 11
           }
-        }, "<"), " ", dateAnchor.getFullYear(), "/", dateAnchor.getMonth() + 1, "/", dateAnchor.getDate(), " ", /*#__PURE__*/_react.createElement("button", {
+        }, "<"), /*#__PURE__*/_react.createElement("input", {
+          type: "date",
+          value: this.state.date.toISOString().split('T')[0],
+          onChange: this.onDateChange,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 64,
+            columnNumber: 11
+          }
+        }), /*#__PURE__*/_react.createElement("button", {
           onClick: this.clickRight,
           __self: this,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 56,
-            columnNumber: 151
+            lineNumber: 65,
+            columnNumber: 11
           }
         }, ">")), /*#__PURE__*/_react.createElement(_calendarDefault.default, {
           events: this.state.events,
           __self: this,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 57,
+            lineNumber: 67,
             columnNumber: 9
           }
         }))
@@ -26750,7 +26764,8 @@ try {
       // some hours may have unusual duration, due to leap seconds
       // so we overstep into the next hour a little, then round back to whole hours
       moment = new Date(moment.getTime() + (60 + 10) * 60 * 1000);
-      moment = new Date(moment.getFullYear(), moment.getMonth(), moment.getDate(), moment.getHours(), 0);
+      const excess = moment.getMilliseconds() + moment.getSeconds() * 1000 + moment.getMinutes() * 1000 * 60;
+      moment = new Date(moment.getTime() - excess);
     }
     return result;
   }
@@ -26837,6 +26852,6 @@ exports.default = generateEvents;
 const standardEventNames = ['Software Daily Standup', 'Emma, Steven, Peter Meeting Board Room', 'Paul NRF project planning Finance Room', 'Tobias Manufacturing Backlog Grooming Development Room', 'Integration Testing', 'Performance Discussion', 'Sprint Planning', 'Business Demo', 'Release Cut'];
 function offsetDate(dt, hours) {}
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["1j6wU","3nwlL","5rkFb"], "5rkFb", "parcelRequire6113")
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["1j6wU","3Imd1","5rkFb"], "5rkFb", "parcelRequire6113")
 
 //# sourceMappingURL=index.3fafb3e2.js.map

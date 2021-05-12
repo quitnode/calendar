@@ -9,6 +9,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+.hourBar {
+  padding-right: 0.2em;
+  text-align: right;
+}
+
 .calendar {
   display: grid;
   grid-template-rows: 1fr;
