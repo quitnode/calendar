@@ -740,9 +740,9 @@ if ("development" !== "production") {
   })();
 }
 
-},{}],"3Imd1":[function(require,module,exports) {
+},{}],"3nwlL":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 33633;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "0fa2489aa94c8731ee2aee9f3fafb3e2";
@@ -26476,19 +26476,91 @@ try {
   var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
   _parcelHelpers.defineInteropFlag(exports);
   var _react = require('react');
-  require('react-dom');
+  var _calendar = require('./calendar');
+  var _calendarDefault = _parcelHelpers.interopDefault(_calendar);
+  var _generateEvents = require('./generateEvents');
+  var _generateEventsDefault = _parcelHelpers.interopDefault(_generateEvents);
   var _jsxFileName = "/workspaces/calendar/src/app.js";
   class App extends _react.Component {
+    constructor(props) {
+      super(props);
+      let date = new Date();
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const events = _generateEventsDefault.default({
+        date
+      });
+      this.state = {
+        date,
+        generated: {
+          [date.toString()]: events
+        },
+        events
+      };
+    }
+    setDate = date => {
+      let generated = this.state.generated;
+      let events = generated[date.toString()];
+      if (!events) {
+        events = _generateEventsDefault.default({
+          date
+        });
+        generated[date.toString()] = events;
+      }
+      this.setState({
+        date,
+        events,
+        generated
+      });
+    };
+    clickLeft = () => {
+      let {date} = this.state;
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      date = new Date(date.getTime() - 6 * 60 * 60 * 1000);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      this.setDate(date);
+    };
+    clickRight = () => {
+      let {date} = this.state;
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      date = new Date(date.getTime() + (24 + 6) * 60 * 60 * 1000);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      this.setDate(date);
+    };
     render() {
+      const dateAnchor = this.state.date;
       return (
-        /*#__PURE__*/_react.createElement("button", {
+        /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("h2", {
           __self: this,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 7,
-            columnNumber: 7
+            lineNumber: 56,
+            columnNumber: 9
           }
-        }, "OK")
+        }, "Calendar for ", /*#__PURE__*/_react.createElement("button", {
+          onClick: this.clickLeft,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 56,
+            columnNumber: 26
+          }
+        }, "<"), " ", dateAnchor.getFullYear(), "/", dateAnchor.getMonth() + 1, "/", dateAnchor.getDate(), " ", /*#__PURE__*/_react.createElement("button", {
+          onClick: this.clickRight,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 56,
+            columnNumber: 151
+          }
+        }, ">")), /*#__PURE__*/_react.createElement(_calendarDefault.default, {
+          events: this.state.events,
+          __self: this,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 57,
+            columnNumber: 9
+          }
+        }))
       );
     }
   }
@@ -26499,6 +26571,272 @@ try {
   window.$RefreshSig$ = prevRefreshSig;
 }
 
-},{"react":"3b2NM","react-dom":"2sg1U","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f"}]},["1j6wU","3Imd1","5rkFb"], "5rkFb", "parcelRequire6113")
+},{"react":"3b2NM","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f","./calendar":"2NwTP","./generateEvents":"1SaZp"}],"2NwTP":[function(require,module,exports) {
+var helpers = require("../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+  _parcelHelpers.defineInteropFlag(exports);
+  _parcelHelpers.export(exports, "dayHours", function () {
+    return dayHours;
+  });
+  var _react = require('react');
+  var _eventLayout = require('./eventLayout');
+  var _eventLayoutDefault = _parcelHelpers.interopDefault(_eventLayout);
+  require('./calendar.css');
+  var _jsxFileName = "/workspaces/calendar/src/calendar.js";
+  function Calendar({events} = {}) {
+    const columns = _eventLayoutDefault.default(events);
+    const todayAnchor = events[0].start;
+    const todayStart = new Date(todayAnchor.getFullYear(), todayAnchor.getMonth(), todayAnchor.getDate()).getTime();
+    const tomorrowAnchor = new Date(todayStart + (24 + 6) * 60 * 60 * 1000);
+    // going to the next day in daylight-safe manner
+    const todayEnd = new Date(tomorrowAnchor.getFullYear(), tomorrowAnchor.getMonth(), tomorrowAnchor.getDate()).getTime();
+    const hours = dayHours(todayAnchor);
+    return (
+      /*#__PURE__*/_react.createElement("div", {
+        className: "calendar",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 26,
+          columnNumber: 5
+        }
+      }, /*#__PURE__*/_react.createElement("div", {
+        className: "hourBar",
+        __self: this,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 27,
+          columnNumber: 7
+        }
+      }, hours.map((hr, hrIndex) => {
+        const hourDuration = (hrIndex + 1 < hours.length ? hours[hrIndex + 1].getTime() : todayEnd) - hr.getTime();
+        const hourHeightPc = hourDuration * 100 / (todayEnd - todayStart);
+        return (
+          /*#__PURE__*/_react.createElement("div", {
+            className: "hour",
+            key: hr.getTime(),
+            style: {
+              height: `${hourHeightPc}%`
+            },
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 33,
+              columnNumber: 15
+            }
+          }, hr.getHours(), ":00")
+        );
+      })), columns.map((col, colIndex) => {
+        return (
+          /*#__PURE__*/_react.createElement(_react.Fragment, {
+            key: `column-${colIndex}`,
+            __self: this,
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 47,
+              columnNumber: 13
+            }
+          }, col.map((ev, evIndex) => {
+            const totalHeightPc = (ev.end.getTime() - todayStart) * 100 / (todayEnd - todayStart);
+            const paddingHeightPc = (ev.start.getTime() - todayStart) * 100 / (ev.end.getTime() - todayStart);
+            const eventHeightPc = (ev.end.getTime() - ev.start.getTime()) * 100 / (ev.end.getTime() - todayStart);
+            let durationMinutes = (ev.end.getTime() - ev.start.getTime()) / 1000 / 60;
+            let durationHours = Math.floor(durationMinutes / 60);
+            durationMinutes = durationMinutes - durationHours * 60;
+            let spanColumns = 1;
+            let overlapsAnyOtherEvents = null;
+            for (let iExtraColumn = colIndex + 1; iExtraColumn < columns.length; iExtraColumn++) {
+              const extraCol = columns[iExtraColumn];
+              for (const otherEv of extraCol) {
+                if (_eventLayout.eventsOverlap(otherEv, ev)) {
+                  overlapsAnyOtherEvents = otherEv;
+                  break;
+                }
+              }
+              if (overlapsAnyOtherEvents) break; else spanColumns++;
+            }
+            return (
+              /*#__PURE__*/_react.createElement("div", {
+                key: `event-${evIndex}`,
+                className: "eventContainer",
+                style: {
+                  gridRow: 1,
+                  gridColumnStart: colIndex + 2,
+                  gridColumnEnd: colIndex + 2 + spanColumns,
+                  height: `${totalHeightPc}%`
+                },
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 73,
+                  columnNumber: 21
+                }
+              }, /*#__PURE__*/_react.createElement("div", {
+                className: "filler",
+                style: {
+                  width: 0,
+                  height: `${paddingHeightPc}%`
+                },
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 80,
+                  columnNumber: 23
+                }
+              }), /*#__PURE__*/_react.createElement("div", {
+                className: "event",
+                style: {
+                  height: `${eventHeightPc}%`,
+                  minHeight: `${eventHeightPc}%`
+                },
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 85,
+                  columnNumber: 23
+                }
+              }, /*#__PURE__*/_react.createElement("div", {
+                className: "time",
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 90,
+                  columnNumber: 25
+                }
+              }, ev.start.getHours(), ":", (100 + ev.start.getMinutes()).toString().slice(1)), /*#__PURE__*/_react.createElement("div", {
+                className: "title",
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 91,
+                  columnNumber: 25
+                }
+              }, ev.eventName), /*#__PURE__*/_react.createElement("div", {
+                className: "duration",
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 92,
+                  columnNumber: 25
+                }
+              }, durationHours ? /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("span", {
+                __self: this,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 92,
+                  columnNumber: 70
+                }
+              }, durationHours), ":") : null, (100 + durationMinutes).toString().slice(1))))
+            );
+          }))
+        );
+      }))
+    );
+  }
+  exports.default = Calendar;
+  _c = Calendar;
+  function dayHours(dateAnchor) {
+    let moment = new Date(dateAnchor.getFullYear(), dateAnchor.getMonth(), dateAnchor.getDate());
+    /** @type {Date[]}*/
+    const result = [];
+    while (true) {
+      if (moment.getFullYear() !== dateAnchor.getFullYear() || moment.getMonth() !== dateAnchor.getMonth() || moment.getDate() !== dateAnchor.getDate()) break;
+      result.push(moment);
+      // step 1 hour ahead, but!!
+      // some hours may have unusual duration, due to leap seconds
+      // so we overstep into the next hour a little, then round back to whole hours
+      moment = new Date(moment.getTime() + (60 + 10) * 60 * 1000);
+      moment = new Date(moment.getFullYear(), moment.getMonth(), moment.getDate(), moment.getHours(), 0);
+    }
+    return result;
+  }
+  var _c;
+  $RefreshReg$(_c, "Calendar");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+
+},{"react":"3b2NM","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"4Jj4f","./eventLayout":"1Adj9","./calendar.css":"71nWm"}],"1Adj9":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "eventsOverlap", function () {
+  return eventsOverlap;
+});
+function eventLayout(events) {
+  const orderedEvents = events.sort((ev1, ev2) => ev1.start.getTime() - ev2.start.getTime() || ev1.end.getTime() - ev2.end.getTime());
+  /** @type {typeof events[]}*/
+  const columns = [];
+  for (const ev of orderedEvents) {
+    let addedToColumn = false;
+    for (const col of columns) {
+      const lastEvent = col[col.length - 1];
+      if (ev.start >= lastEvent.end) {
+        col.push(ev);
+        addedToColumn = true;
+        break;
+      }
+    }
+    if (!addedToColumn) {
+      columns.push([ev]);
+    }
+  }
+  return columns;
+}
+exports.default = eventLayout;
+function eventsOverlap(ev1, ev2) {
+  return ev1.start <= ev2.end && ev1.end >= ev2.start;
+}
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"71nWm":[function() {},{}],"1SaZp":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "standardEventNames", function () {
+  return standardEventNames;
+});
+function generateEvents({date = new Date(), count = 10, startHour = 9, endHour = 21, shortestEventMinutes = 15, granularityMinutes = 1, eventNames = standardEventNames} = {}) {
+  const startMoment = new Date(date.getFullYear(), date.getMonth(), date.getDate(), startHour, 0).getTime();
+  const endMoment = new Date(date.getFullYear(), date.getMonth(), date.getDate(), endHour + 1, 0).getTime();
+  const maxEventDuration = (endMoment - startMoment) / 4;
+  const minEventDuration = shortestEventMinutes * 60 * 1000;
+  const granularityDuration = granularityMinutes * 60 * 1000;
+  const existingNames = {};
+  const events = [...Array(count)].map(() => {
+    const eventDurationPrecise = Math.random() * (maxEventDuration - minEventDuration) + minEventDuration;
+    const eventDurationRounded = Math.floor(eventDurationPrecise / granularityDuration) * granularityDuration;
+    const eventStartPrecise = startMoment + Math.random() * (endMoment - startMoment - eventDurationRounded);
+    const eventStartRounded = Math.floor(eventStartPrecise / granularityDuration) * granularityDuration;
+    let eventName = standardEventNames[Math.floor(Math.random() * eventNames.length)];
+    if (existingNames[eventName]) {
+      let index = 2;
+      while (true) {
+        const tryName = `${eventName} ${index}`;
+        if (!existingNames[tryName]) {
+          eventName = tryName;
+          break;
+        } else {
+          index++;
+        }
+      }
+    }
+    existingNames[eventName] = true;
+    return {
+      eventName,
+      start: new Date(eventStartRounded),
+      end: new Date(eventStartRounded + eventDurationRounded)
+    };
+  });
+  return events;
+}
+exports.default = generateEvents;
+const standardEventNames = ['Software Daily Standup', 'Emma, Steven, Peter Meeting Board Room', 'Paul NRF project planning Finance Room', 'Tobias Manufacturing Backlog Grooming Development Room', 'Integration Testing', 'Performance Discussion', 'Sprint Planning', 'Business Demo', 'Release Cut'];
+function offsetDate(dt, hours) {}
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["1j6wU","3nwlL","5rkFb"], "5rkFb", "parcelRequire6113")
 
 //# sourceMappingURL=index.3fafb3e2.js.map
