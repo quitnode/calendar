@@ -740,9 +740,9 @@ if ("development" !== "production") {
   })();
 }
 
-},{}],"6MR4l":[function(require,module,exports) {
+},{}],"1UafY":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 38339;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "61811293c9802bf575df4ef34bc5dd24";
@@ -26533,6 +26533,7 @@ try {
               columnNumber: 13
             }
           }, col.map((ev, evIndex) => /*#__PURE__*/_react.createElement(EventTile, {
+            key: `event-${evIndex}`,
             evIndex,
             colIndex,
             ev,
@@ -26597,7 +26598,7 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 132,
+          lineNumber: 133,
           columnNumber: 5
         }
       }, /*#__PURE__*/_react.createElement("div", {
@@ -26609,7 +26610,7 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 140,
+          lineNumber: 141,
           columnNumber: 7
         }
       }), /*#__PURE__*/_react.createElement("div", {
@@ -26621,7 +26622,7 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 145,
+          lineNumber: 146,
           columnNumber: 7
         }
       }, /*#__PURE__*/_react.createElement("div", {
@@ -26629,7 +26630,7 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 150,
+          lineNumber: 151,
           columnNumber: 9
         }
       }, formatTime(ev.start)), /*#__PURE__*/_react.createElement("div", {
@@ -26637,7 +26638,7 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 151,
+          lineNumber: 152,
           columnNumber: 9
         }
       }, ev.eventName), /*#__PURE__*/_react.createElement("div", {
@@ -26645,14 +26646,14 @@ try {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 152,
+          lineNumber: 153,
           columnNumber: 9
         }
       }, durationHours ? /*#__PURE__*/_react.createElement(_react.Fragment, null, /*#__PURE__*/_react.createElement("span", {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 152,
+          lineNumber: 153,
           columnNumber: 54
         }
       }, durationHours), ":") : null, (100 + durationMinutes).toString().slice(1), durationHours ? '' : 'min')))
@@ -26969,6 +26970,6 @@ exports.default = generateEvents;
 const standardEventNames = ['Software Daily Standup', 'Emma, Steven, Peter Meeting Board Room', 'Paul NRF project planning Finance Room', 'Tobias Manufacturing Backlog Grooming Development Room', 'Integration Testing', 'Performance Discussion', 'Sprint Planning', 'Business Demo', 'Release Cut'];
 function offsetDate(dt, hours) {}
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"4RKET":[function() {},{}]},["1j6wU","6MR4l","5rkFb"], "5rkFb", "parcelRequire6113")
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"4RKET":[function() {},{}]},["1j6wU","1UafY","5rkFb"], "5rkFb", "parcelRequire6113")
 
 //# sourceMappingURL=index.4bc5dd24.js.map
