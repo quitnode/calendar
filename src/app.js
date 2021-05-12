@@ -16,7 +16,8 @@ export default class App extends React.Component {
       date,
       generated: { [date.toString()]: events },
       events
-    }
+    };
+    document.title = `Calendar ${date.getDate()} ${monthStr(date)}`;
   }
 
   setDate = (date) => {
@@ -26,6 +27,8 @@ export default class App extends React.Component {
       events = generateEvents({ date });
       generated[date.toString()] = events;
     }
+
+    document.title = `Calendar ${date.getDate()} ${monthStr(date)}`;
 
     this.setState({
       date,

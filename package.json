@@ -2,10 +2,9 @@
   "name": "calendar",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html --dist-dir .parcel-dev",
-    "build": "parcel src/index.html --dist-dir docs --public-url .",
+    "build": "parcel build src/index.html --dist-dir docs --public-url .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
