@@ -76,6 +76,7 @@ export default function Calendar({ events, className, onEventClick } = {}) {
               {
                 col.map((ev, evIndex) => (
                   <EventTile
+                    key={`event-${evIndex}`}
                     {...{
                       evIndex, colIndex,
                       ev,
